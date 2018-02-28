@@ -1,0 +1,54 @@
+ProFlex v5.0 incorporates all the functionality of ProFlex v4.0 with
+some additional features, bug fixes, improved user-interfaces, and
+more detailed output. 
+
+Features added/modified:
+------------------------
+The new version is more robust in that it can handle input PDB files
+with missing 'H' atoms on residues and waters, 'ANISOU'tropic records, 
+duetirium and heavy water instead of hydrogen and water, and alternate 
+positions and multiple chains.
+
+The process of screening bonds out of the bond network is more 
+streamlined and intutively presented to the user as opposed to the
+older version wherein all the various filtering options are presented
+as a single list of overlapping or ambiguous choices of filters. 
+Further, the distance and angular constraints imposed
+on the H-bonds earlier were inaccurate and incomplete, for example,
+only theta angle was checked for conformity and the allowed value was
+theta > 80 which has been corrected to 110. 
+
+An added capability lets a user set more stringent stereochemical 
+constraints on H-bonds to be kept for flexibility analysis.
+
+HBdilution plot generation code has been revamped. Previously, both
+portrait and landscape layout were supported. Now, the portrait output
+is discontinued. Old hbdilute generated buggy plots as it did not consider
+inserted and missing residues. In the current output, both of these are
+handled correctly and are displayed pretty accurately in both single and
+multipage outputs. Further, multiple chain proteins were wrongly handled
+in the previous version. This has been fixed too with each chain's starting
+and ending boundaries displayed correctly. Also, the legends on the plot
+have been revamped to aid the user understand and interpret the plot better.
+
+Bug fixes:
+----------
+1) flex_index.cpp is a utility to map stability indices output by
+   ProFlex on to a b-value equivalent range of values to allow
+   visualization of protein in a color-coded scheme to reflect
+   the relative flexibility of protein bond network fragments.
+
+   We identified that the previous version of this program was 
+   mapping the stability indices in a reverse order and rectified it.
+   We also created a new color-coded spectrum that is necessary
+   for visualization. 
+
+2) We fixed errors caused by out-of-bounds array access due to 
+   absense of representative constant variables namely, MAXATOMS, 
+   MAX_CLUSTER_COUNT, FILE_LIST_SIZE.
+
+
+Changed user-interface and output:
+----------------------------------
+Refer to the "ReleaseNotes" document for a detailed description of
+the changes made to v4.0 to generate v5.0.

@@ -1,0 +1,765 @@
+
+Global changes from ProFlex v.4 to ProFlex v.5:
+-----------------------------------------------
+
+1) The environment variable $FIRSTPTB was substituted by $PROFLEX_HOME
+
+2) All the sourcecode in 
+
+   <$PROFLEX_HOME>/hbdilute/
+   <$PROFLEX_HOME>/first/src/c++/
+   <$PROFLEX_HOME>/first/src/fortran/
+
+   has been updated to reflect the latest version (v5.0) and copyright 
+   info (1997 - 2008).
+
+3) Names/format of some of the output files has been changed:
+   
+	a) _FIRSTdataset	-> _proflexdataset
+	b) _h-bonds.		-> _h-bonds_SEfilt. (stereochemically & 
+						energy filtered h-bond list)
+
+4) Six new files are output in v5.0:
+	
+	a) preacptr_info
+	
+		- preacceptor atom numbers of all the H-bonds listed in
+		  the _proflexdataset
+
+	b) _h-phobs_SEfilt.xxxx
+
+		- Bond indices from _proflexdataset that correspond to the
+		  tether atoms. The _h-bonds_SEfilt.xxxx file will not contain
+		  any tether information unlike v4.0.  
+
+	c) _flex_0001.pdb
+
+		- A PDB format file with all the atom records including the 
+		  tethers used as an input to the program that writes out
+		  the PyMol scripts. The atom number field replaced by a 
+		  unique index mapping each atom to a unique rigid or flexibile
+		  cluster and b-value field is replaced by a flex_index score 
+		  that indicates the relative flexibility of each residue
+		  on a scale of 0 through 99 (0 - most rigid, 99 - most flexible,
+		  49-50 - isostatic) 
+
+	d) <protein>_flex_0001.pml, <protein>_RC_0001.pml, and <protein>_FC_0001.pml
+
+		- PyMol scripts for visualizing the protein flexibility 
+		  based on flex_index values, rigid cluster decomposition,
+		  and collectively moving clusters respectively.
+
+List of output files from flexibility analysis:
+===============================================
+
+v5.0				v4.0		
+----				----	
+<protein>_allbond.0001		<protein>_allbond.0001
+<protein>_analysis.log		<protein>_analysis.all
+<protein>_h-bonds_SEfilt.0001	<protein>_h-bonds.0001
+<protein>_h-phobs_SEfilt.0001		-
+<protein>_proflexdataset	<protein>_FIRSTdataset
+<protein>_flex_0001.pdb			-
+preacptr_info				-
+	-			<protein>_bond_wt.0001
+	-			<protein>_fig_0001.htm
+	-			<protein>_fdecomp.0001
+	-			<protein>_sdecomp.0001
+	-			<protein>_rdecomp.0001
+	-			<protein>_fig_0001.pdb
+	-			<protein>_graphic.0001
+	-			<protein>_Rscript.0001
+	-			<protein>_txt_0001.htm
+
+List of output files from H-bond dilution:
+==========================================
+
+v5.0				v4.0
+----				----
+<protein>_h-bonds.ps		<protein>_h-bonds.ps
+decomp_list			decomp_list
+<protein>_h-bonds_SEfilt.0001	<protein>_h-bonds.0001
+<protein>_h-phobs_SEfilt.0001		-
+
+
+###########################################################################
+
+			CODE CHANGES
+		   =====================
+
+List of files changed:
+----------------------
+
+1) <$PROFLEX_HOME>/first/include/class.h
+
+2) <$PROFLEX_HOME>/first/src/c++/main.cpp
+
+3) <$PROFLEX_HOME>/first/src/c++/find_hbonds.cpp
+
+4) <$PROFLEX_HOME>/first/src/c++/pick_hbonds.cpp
+
+5) <$PROFLEX_HOME>/first/src/c++/makechem.cpp
+
+6) <$PROFLEX_HOME>/first/src/c++/transitions.cpp
+
+7) <$PROFLEX_HOME>/first/src/fortran/first.f
+
+8) <$PROFLEX_HOME>/first/src/fortran/getfiles.f
+
+9) <$PROFLEX_HOME>/first/src/fortran/hbdilute.f
+
+10) <$PROFLEX_HOME>/first/src/fortran/outputfirst.f
+
+11) <$PROFLEX_HOME>/first/src/fortran/read_hb_list.f
+
+12) <$PROFLEX_HOME>/util/flex_index.cpp 
+
+13) <$PROFLEX_HOME>/hbdilute/include/types.h
+
+14) <$PROFLEX_HOME>/hbdilute/src/hbdilute.c
+
+15) <$PROFLEX_HOME>/hbdilute/src/hbfunctions.c
+
+16) <$PROFLEX_HOME>/hbdilute/src/postscript.c
+
+17) <$PROFLEX_HOME>/hbdilute/include/postscript.h, hbfunctions.h, hbdilute.h
+
+18) <$PROFLEX_HOME>/first/src/c++/fix_babel.cpp
+
+19) <$PROFLEX_HOME>/../Makefile
+
+----------------------------------------------------------------------
+
+1) class.h
+
+a) Changed maxnopt from 19 to 5
+b) Changed donor-hydrogen maximum length from 2.6 to 2.5 A and
+   acceptor-hydrogen length from 3.6 to 3.5 A to maintain consistency
+   among various softwares (SLIDE, ROCK, ProFlex) designed by PSA lab.
+c) Changed the minimum donor-hydrogen-acceptor (theta) angle from 80 to 110
+d) Added the minimum hydrogen-acceptor-preacptr (delta) angle, set to 90
+e) Changed the prototype for pick_hbonds() from (int) to (int,int)
+
+-----------------------------------------------------------------------
+
+2) main.cpp
+
+a) OUTPUT MESSAGE CHANGED: 
+
+  If wrong or no options specified then the old menu was:
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   Usage : ./proflex [-r] [-e] [-non] <-h|{-p|-pw}> <filename>
+
+   <filename> Expected to have a .pdb or .PDB file extension.
+              With the -p or -pw option the extension may be _FIRSTdataset.
+
+
+      Option definitions:
+
+      -non   Use for non-interactive hydrogen bond dilution.
+
+      -h     Use with a PDB file including polar hydrogens (required by default).
+             Hydrogens can be added explicitly by programs like WhatIf.
+
+      -r     Distance between van der Waals surfaces of atoms participating
+             in a hydrophobic interaction. 0.5 is default.
+
+      -e     Max energy a hydrogen bond can have to be included in the analysis
+            ( E.g. -0.1 for including only H-bonds with energy < -0.1 kcal/mol.
+             Default = -0.1 kcal/mol)
+
+      -p     Use when the original PDB file has been previously processed to 
+	     assign all bonds. *proflexdataset file from previous run must 
+	     exist in the same directory.
+
+      -pw    Same as [-p] except previous warning messages are re-displayed.
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   The correponding new output is as follows:
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    Usage : proflex [-r] [-e] [-nonh|nonf] <-h|{-p|-pw}> <filename>
+
+    <filename> Expected to have a .pdb or .PDB file extension.
+               With the -p or -pw option the input file may instead be the 
+		_proflexdataset.
+
+
+     Option definitions:
+
+     -nonh   Use for non-interactive hydrogen bond dilution
+     -nonf  Use for non-interactive flexibility analysis
+
+            **NOTE: Any filtering using stereochemical, energy,
+                    hydrophobic, side chain, and water criteria from the
+                    previous ProFlex run generating the proflex_dataset file
+                    are not applied in -non mode.  Only the default 
+		    stereochemical criteria are applied. Be sure to only 
+		    include buried water molecules in the input PDB file.**
+
+     -h     Use with a PDB file having hydrogens
+            Hydrogens can be added explicitly by programs like WhatIf.
+
+     -r     Distance between van der Waal's surfaces of atoms participating
+            in a hydrophobic interaction. 0.5 is default.
+
+     -e     Maximum energy a hydrogen bond can have to be included in the analysis
+
+     -p     Use when the original PDB file has been previously processed.
+            *proflexdataset file from previous run must exist in the same 
+	    directory.
+
+     -pw    Same as [-p] except previous warning messages are re-displayed.
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+b) Changed "FIRSTdataset" to "proflexdataset" and also changed string lengths
+   appropriately at multiple locations.
+c) Changed the environment variable.
+d) Added -nonf option to reflect Kevin Keating's changes for making ProFlex output
+   compatible with StoneHinge
+e) Added input validation for -r and -e options
+f) The addition of stereochemical filters required some additional 
+   user-interaction, which had to be eliminated for -nonh option.
+
+-----------------------------------------------------------------------
+
+3) find_hbonds.cpp
+
+a) Added necessary code to extract the preacceptor atom number and stored it
+   in the previously unused but allocated "hbond[][0]" array.
+
+b) Implemented/rectified the mandatory stereochemical filters.
+
+   The constraints that have to be satisfied for a H-bond to be included in
+   the bond network for further processing are the hydrogen-acceptor and
+   donor-acceptor distances and the theta (donor-H-acceptor) and delta 
+   (H-acceptor-preacceptor) angles. Screen output showing each filtered
+   H-bond with the specific constraint unsatisfied is generated and also
+   written out into "filtered_Hbonds_log" file.
+
+c) Fix for H-bonds without preacptr information formed due to water molecules
+   with 'H' atoms missing in the input PDB file is that we identify such cases
+   when the PDB file is read and the user is prompted to re-run ProFlex
+   with a modified input PDB file with all the requisite data in the file.
+
+d) For H-bonds involving waters, the pre-acceptor atom can be either one of
+   the water hydrogens. We pick the H atom that makes a more obtuse delta 
+   angle.
+
+-----------------------------------------------------------------------
+
+4) pick_hbonds.cpp
+
+a) Added the following output:
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+    The following stereochemical rules serve as default selection criteria:
+
+        Hydrogen-Acceptor distance  <= 2.5 Angstroms
+                 with Sulphur atom  <= 3.0 Angstroms
+                   for Salt-bridge  <= 3.5 Angstroms
+
+        Donor-Acceptor distance     <= 3.5 Angstroms
+              with Sulphur atom     <= 4.0 Angstroms
+                for Salt-bridge     <= 4.5 Angstroms
+
+        Theta (D-H-A angle)         >= 110 Degrees
+        Delta (H-A-P angle)         >= 90  Degrees
+
+    Do you wish to impose more stringent rules? (y/n):
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+b) Implemented the more stringent rules and thorough input validation.
+
+c) Added the following menu and implemented each of the individual filters.
+
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+                        NON-COVALENT BOND SCREENING OPTIONS MENU
+
+         1 : Keep *ALL* H-bonds involving WATER
+                (Select this ONLY if you have included only
+                 buried water molecules in the input PDB file)
+         2 : Remove *ALL* H-bonds involving sidechain atoms
+         3 : Remove *ALL* H-bonds involving non-water HETATOMs
+         4 : Remove hydrophobic tethers
+         5 : Use defaults (keep all hydrophobic tethers and H-bonds except 
+		those including water)
+
+         f : Finished selecting options; Continue to next step
+         s : Stop program
+
+        Enter Option:
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+2006:04:10     
+	- Changes to all the H-bond filters
+  	- sidechain-non-water HETATM filter added
+
+     		~ This matters when the user only selects to remove 
+		nonwater-HETATM H-bonds as this set of bonds were being 
+		left out unscreened.
+
+        - The atom name field format is as follows:
+
+		'[][][atom-tye][position][label]' e.g.'  NH1','  CD '
+
+          So, the filter should just check for the atom-type and 
+	  not the whole atom name
+
+d) Added the new energy-based filter and the following menu:
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   Number of H-bonds remaining: 160
+
+   Number of H-phobic tethers remaining: 109
+
+                 Filter on Hydrogen Bond Energy:
+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+        All current hydrogen bonds have energies between:
+           -10.0000 Kcal/Mol  to  5.1156 Kcal/Mol
+
+        Enter a maximum acceptable hydrogen bond energy (in Kcal/Mol): -1
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+e) The corresponding old menu was:
+
+   ========================================================================
+				*OLD* Menu
+
+	                H-BOND SCREENING OPTIONS MENU
+
+         1 : Keep all hydrogen bonds ----> Default assumption
+         2 : Keep mainchain-mainchain hydrogen bonds
+         3 : Keep mainchain-sidechain hydrogen bonds
+         4 : Keep mainchain-Non_water HETATM hydrogen bonds
+         5 : Keep mainchain-WATER_atom hydrogen bonds
+         6 : Keep sidechain-sidechain hydrogen bonds
+         7 : Keep sidechain-Non_water HETATM hydrogen bonds
+         8 : Keep sidechain-WATER_atom hydrogen bonds
+         9 : Keep HETATM_atom-Non_water HETATM hydrogen bonds
+        10 : Keep WATER_atom-WATER_atom hydrogen bonds
+        11 : Interactively identify hydrogen bonds to keep
+        12 : Filter on Donor-Hydrogen-Acceptor angle
+        13 : Filter on Donor-Acceptor distance
+        14 : Filter on Hydrogen-Acceptor distance
+        15 : Filter on Hydrogen bond energy
+        18 : Interactively identify hydrogen bonds to discard
+        19 : Discard all hydrogen bonds
+
+         f : Finished selection
+         s : Stop program
+
+        The "Keep" selections are subjected to post Filtering.
+        Select one Option:  (Multiple selections are possible)
+
+        Enter Option:
+    ======================================================================
+
+f) Added code to produce the following information.
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+                          SELECTION CRITERIA
+
+        Hydrogen bond geometric selection criteria:
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Donor-Acceptor distance <= 3.5 Ang. without sulfur
+        Donor-Acceptor distance <= 4 Ang. with sulfur
+        Donor-Acceptor distance <= 4.5 Ang. Salt Bridge
+        Hydrogen-Acceptor distance <= 2.5 Ang. without sulfur
+        Hydrogen-Acceptor distance <= 3 Ang. with sulfur
+        Hydrogen-Acceptor distance <= 3.5 Ang. Salt Bridge
+        Donor-Hydrogen-Acceptor angle >= 110 Deg.
+        Hydrogen-Acceptor-Preacceptor angle >= 90 Deg.
+
+        Hydrogen bond energetic selection criteria:
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Maximum allowed hydrogen bonding energy = -1 Kcal/Mol
+
+        Criteria A = Donor-Acceptor Distance
+        Criteria B = Hydrogen-Acceptor Distance
+        Criteria C = Donor-Hydrogen-Acceptor Angle
+        Criteria D = Hydrogen-Acceptor-Preacceptor Angle
+        Criteria E = Relative H-bond energy top percentile
+        Criteria F = H-bond energy
+        Select bond when: [A .AND. B .AND. C .AND. D] .AND. (E .AND. F) = TRUE
+
+        Non-covalent bond selection criteria:
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Default: Remove *ALL* H-bonds involving waters
+   ---------------------------------------------------------------------
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+g) Added code to compute preacceptor-acceptor-H angle and perform H-bond 
+   filtering based on it
+
+h) Salt bridges do not have to be subjected to angular check and can be 
+   accepted if H-A or D-A distance is acceptable
+
+i) Added code to suppress user-interactive code when -non (hbdilution) and 
+   -nonf (flexibility analysis) option is selected
+
+-----------------------------------------------------------------------
+
+5) makechem.cpp and (6) transitions.cpp
+
+a) Examined and tested (with help from Maria) makechem.cpp 
+	- In case, multiple residue or side-chain conformers exist in the 
+   input PDB file ProFlex scans for a maximum occupancy conformer. 
+   If it fails to find one then it looks for a low mobility conformer.
+
+b) Implemented all the file name changes and changed the code that
+   extracts the common prefix for each of the file names including
+   the sizes of the filename holder variables.
+
+c) (i) Incorporated code to change 'D'euterium atoms to 'H' atoms and
+   process them, (ii) added a fix to handle 'ANISOU'tropic records 
+   present in input PDB file
+
+d) Missing polar hydrogens on any of the residues and waters are detected
+   and the user is prompted to take necessary action before program terminates.
+   This test has been revised to check each chain in the input and only for
+   the standard residue types.
+
+e) Residue number comparison using strcmp() mishandled negative rsd indices! 
+   The logic was revised to fix this error.
+
+f) Output file "analysis.all" is now called "analysis.log".
+
+-----------------------------------------------------------------------
+
+7) first.f
+
+a) Modified the following analysis menu.
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+				*NEW* Menu
+
+    ANALYSIS MENU
+
+   What would you like to perform:
+
+    (1) Flexibility and Rigidity Analysis.
+    (2) Hydrogen Bond Dilution.
+   
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   ========================================================================
+				*OLD* Menu
+       ANALYSIS MENU
+
+     What would you like to perform:
+
+       (1) Flexibility and Rigidity Analysis.
+       (2) Hydrogen Bond Dilution.
+       (3) Bond Stripping.
+
+   =========================================================================
+
+b) Changed the input validation code accordingly, i.e., option choices 
+   less than 1 and greater than 2 are flagged as erroneous and a message
+   is output to the user.
+   
+c) Added fix to process -nonf option. (StoneHinge compatibility)
+
+-----------------------------------------------------------------------
+
+8) getfiles.f
+
+a) Rewrote this file to ensure correct renaming of files by changing the
+   naming logic.
+
+-----------------------------------------------------------------------
+
+9) hbdilute.f
+
+a) Added following new menu:
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+				*NEW* Menu
+
+   Which hydrogen bond dilution analysis would you like?
+
+   (1) Standard hydrogen bond dilution.
+
+   (2) Random dilution over all H-bonds.
+       NOTE: This option is not *recommended*;
+             It may be used to probe the influence of H-bond
+             density, as opposed to strength, on rigidity
+
+   (3) Flexible region and rigid cluster analysis at a
+       specific energy in the H-bond dilution.
+
+   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   ========================================================================
+				*OLD* Menu
+
+   Which hydrogen bond dilution analysis would you like?
+
+    (1) Standard Hydrogen Bond Dilution.
+
+    (2) Random dilution over all bonds.
+
+    (3) Rigid Cluster Analysis output files at a specific
+       point in standard dilution.
+
+   ========================================================================
+
+b) Examined each of the above options for correctness and tested them.
+   Also, made some changes to ensure consistency in output files produced
+   for each of the options. Also, added code to produce separate h-bond and
+   h-phob (hydrophobic tether) files.
+
+c) Rewrote code for option 3 to allow filtering with respect to an energy
+   cutoff rather than an H-bond number. One of the changes is to handle
+   the hbond list correctly that was previously sorted in the ascending order
+   of energy.
+
+d) Changed code corresponding to fetching files from a user-specified
+   "PROFLEX" directory and changes to account for the filename changes
+   such as "FIRSTdataset" to "proflexdataset".
+
+e) Detected a bug in h-bond count being passed to another function,
+   which resulted in out-of-bound memory access, and fixed it.
+
+f) Added fix to suppress some output in -non option. 
+
+-----------------------------------------------------------------------
+
+10) outputfirst.f
+
+a) Added code to output (or suppress) tether info into hphob-file and 
+   h-bonds into h-bond file based on user-selected options.
+
+b) Added code to output the correct number of h-bonds and tethers into
+   the "_analysis_" file and the display.
+
+c) Added a fix for processing the -nonf option added by Kevin for StoneHinge.
+
+-----------------------------------------------------------------------
+
+11) read_hb_list.f
+
+a) Minor addition of code to make a note of any tethers being processed
+
+-----------------------------------------------------------------------
+
+12) flex_index.cpp 
+
+a) Updated MAXATM from 10000 to 100000
+b) Changed "FIRSTdataset" to "proflexdataset"
+c) Made changes to fix Linux g++ file opening problem
+
+d) The old flex_index.cpp program assigned flexibility index (called flexindex
+   hereon) to an atom by calculating the average of the flexindex values 
+   of all the bonds in which the atom participates. The previous assignment 
+   could result in varying flexindex values within a side-chain ring or 
+   within a hydrophobic tether for instance. Further, flex_index.cpp used 
+   the "bond_wt" file as the input, which did not have information abount
+   all the bonds. To remedy the observed discrepancy, the revised 
+   flex_index.cpp program picks the minimum flexindex among all the bonds 
+   that it participates in as that atom's flexindex. The program uses the 
+   "allbonds" file as its input instead of the "bond_wt" file as it is a 
+   more comprehensive collection of bonds with an additional column that
+   indicated the rigid or flexible cluster label.
+
+   Flexindex is assigned to individual atoms with values ranging between 
+   -1 and +1 where -1 represents maximum rigidity. To facilitate 
+   flexibility-based visualization of proteins the program maps the -1 to +1 
+   values onto 0 to 99 and stores those values in the b-value column of the 
+   input protein's PDB file as most of the 3D visualization softwares use the 
+   temperature factor column of PDB file to color code the protein. To visualize 
+   the protein in InsightII, it requires a spectrum file that maps ranges of
+   b-values onto various colors. We provide a spectrum file called 
+   "flexindex.spect" in the "$PROFLEX_HOME/../util/" directory, which maps the
+   b-values as follows: 
+
+	The 0 to 99 range of values is split into 13 bins with one representing 
+	b-values < 40 (colored blue for rigid), one for b-values > 60 (colored
+	red for flexible) and 11 bins between 40 and 60, colored as follows:
+	five bins between 40 and 49 color coded starting with dark blue, 
+   	indicating least flexibility, and progressively wanning out into light 
+   	cyan; one central bin (49 to 50) colored grey to represent isostatic, 
+	and five bins between 50 and 60 color coded starting with yellow and 
+	progressively gaining in the extent of redness and ending up in dark 
+	red at the maximum value of 60 indicating maximum flexibility. 
+
+   Individual proteins may have varied flexibilities. flex_index.cpp was 
+   faulty in that the minimum and maximum of any protein's flexibility 
+   values, such as (-0.6,+0.4), were being mapped on to 0 to 99, 
+   (i.e., -0.6 equivalent to 0 and +0.4 mapped on to 99), thus
+   blurring the variation of flexibility across multiple proteins 
+   (some of which are more rigid than the others).
+
+   Users who use a visualization software other than InsightII are advised
+   to adopt a similar color coding scheme.
+
+e) The changes in flex-index.cpp cause minimal differences in mainchain
+   flexibility assignments while resulting in more representative assignments 
+   for side-chain groups.
+
+f) Added a -1 option from Kevin Keating's fixes for StoneHinge to output 
+   flexibility index on a -1 to +1 scale. This is named the noscaling option.
+
+g) Added code to process the _allbonds_ file to generate a new PDB file 
+   that contains all the atoms including the tethers and has in it all
+   the necessary information required for creating PyMol scripts for
+   coloring the protein by (a) flexindex, (b) rigid cluster decomposition,
+   and (c) flexible clusters that indulge in collective motions.
+   This results in four new files (refer to the first section of this
+   document for the details).
+
+h) The color pallette used to color the protein by flex_index values 
+   output in the b-value column have been revised to reflect progressive
+   decrease/increase in the relative flexibility.
+
+-----------------------------------------------------------------------
+
+13) types.h
+
+a) Added MAXATOMS, FILE_LIST_SIZE and MAX_CLUSTER_COUNT macros
+
+-----------------------------------------------------------------------
+
+14) hbdilute.c
+
+a) Updated "bulk_atom_label" and "atom_label" array sizes wit MAXATOMS
+b) Updated file_list[] array size with FILE_LIST_SIZE
+c) Updated sizes of various arrays corresponding to clusters to
+   MAX_CLUSTER_COUNT
+d) Updated some loop counters (for loop) to MAX_CLUSTER_COUNT
+e) Added a NULL memory allocation check
+
+f) New variables added to capture missing and inserted residue information
+   and appropriate initialization statements added
+	--- min_max_rsd, missing_rsd_list, missing_rsd_count,
+	    insertions_prior_donor, insertions_prior_acptr,
+            donor_insertion_code,acptr_insertion_code,
+	    acptr_chain_index,donor_chain_index
+
+g) Function interfaces updates:
+	1) read_chem_file, print_decomp 
+		--- min_max_rsd, missing_rsd_list, missing_rsd_count
+	2) print_landscape_footer 
+		--- scale_factor
+	3) print_current_Hbond_info_landscape, 
+	   print_current_Hbond_info_landscape_multipage
+		--- insertions_prior_donor, insertions_prior_acptr,
+		    donor_insertion_code,acptr_insertion_code
+
+h) Added code to compute insertions_prior_<donor or acptr>
+
+i) Disabled portrait output function calls and made landscape output mode
+   to be triggered for those calls
+
+-----------------------------------------------------------------------
+
+15) hbfunctions.c
+
+a) Same as (a-d) for hbdilute.c
+b) read_chem_file(): Added code to declare, initialize, and compute 
+   min_max_rsd, missing_rsd_list, missing_rsd_count, which are later 
+   used in hbdilute.c
+
+-----------------------------------------------------------------------
+
+16) postscript.c
+
+a) Same as (a-d) for hbdilute.c
+b) Added more than 700 lines of code/comments to correct the hbdilution
+   plot display in single and multi-page output formats. The following
+   is the list of corrections:
+
+   i) 	Distinguish between multiple chains and display legibly the boundaries,
+      	the chain-IDs, and residue numbers of each chain
+
+   ii) 	Rectified the logic that computes the starting position of each chain
+
+   iii) Account for insertions in each chain:
+		--- print_decomp(), print_multi_decomp()
+	- Display various inserted residues with their insertion codes at
+	  the top of the plot
+	- Change the resdiue number displayed to reflect the PDB residue 
+	  number accurately and adjust the spacing between any two residue
+	  indices displayed to account for insertions
+	  
+   iv) 	Account for missing residues in each chain 
+	- Display missing residues indicated by an 'X' at the top of the plot
+
+   v) 	Change in the fonts of various text elements on the plot
+		--- print_header()
+	- Times to Arial for left legend (H-bonds left, energy, and r)
+	- Times to Arial for broken H-bond information to the right
+	- Times to CourierNew for the insertions and missing residues displayed 
+	  on the top
+
+   vi) 	Change in the format of broken H-bond information to the right. Also,
+	rectified the broken H-bond indicator (triangles) position computation.
+		--- print_current_Hbond_info_landscape()
+		--- print_current_Hbond_info_landscape_multipage()
+
+	- <H|M|S|W> <rsd> <chain-id> --> <H|M|S|W> <chain-id> <rsd> <ins code>
+
+   vii) Corrected the display color in the bottom legend (donor)
+	and added new statements that explain the format of the right
+	legend.
+		--- print_landscape_footer(), print_data_headings()
+
+   viii)Rectified a bug for singlepage output case when an H-bond that occurs
+	between two different chains is broken.
+   
+
+-----------------------------------------------------------------------
+
+17) postscript.h, hbfunctions.h, hbdilute.h
+
+a) Updated the function interfaces
+
+-----------------------------------------------------------------------
+
+18) fix_babel.cpp
+
+a) To ensure correct inter-atomic distance measurement for specific metal atoms, 
+   we check for the atom-type of the input atom matching the following
+   list of metals: Co, Cu, Fe, K, Mn, Mg, Na, Ni, Zn, and calcium CA and
+   then look up for their corresponding vander Waals radii stored in a
+   lookup table.
+   
+   Minor changes in the conditions being checked on line numbers 
+   1060 & 1218 to ensure right sequence of valency checks is being performed.
+
+b) Less accurate protein input files to ProFlex resulted in "SKIP_HYD:" records 
+   in proflex_dataset, especially, polar hydrogens in proline due to the limit 
+   set in dist_lookup.lib.
+   Added code to explicitly identify such cases in the input and flash a 
+   warning message to the user.
+
+   Also, proflex/prog/first/lib/dist_lookup.lib file was updated 
+   with a new lower limit on N-H distance: 0.85 A.
+
+
+-----------------------------------------------------------------------
+
+19) Makefile in the proflex/ directory:
+
+a) Added all the changes that Kevin Keating had made in StoneHinge to support 
+   proflex execution without setting any environment variable.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% END OF FILE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+

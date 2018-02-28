@@ -1,0 +1,172 @@
+Script started
+
+[usr@host]> $PROFLEX_HOME/../bin/proflex -h 1dif.pdb
+
+
+
+
+
+
+
+
+
+	               #    #   ####   #    #
+	               ##  ##  #       #    #
+	               # ## #   ####   #    #
+	               #    #       #  #    #
+	               #    #  #    #  #    #
+	               #    #   ####    ####
+
+	 ######                  #######
+	 #     #  #####    ####  #        #       ######  #    #
+	 #     #  #    #  #    # #        #       #        #  #
+	 ######   #    #  #    # #####    #       #####     ##
+	 #        #####   #    # #        #       #         ##
+	 #        #   #   #    # #        #       #        #  #
+	 #        #    #   ####  #        ######  ######  #    #
+	----------------------------------------------------------
+	 Software for Protein Flexibility Prediction and Analysis
+	                   version 5.0
+	    Copyright (C) 1997 - 2008, Michigan State University
+	                (formerly called FIRST)
+	     Protein Structural Analysis and Design Laboratory
+	                Michigan State University
+	                   East Lansing MI, USA
+
+
+
+Processing the new data set [1dif.pdb] --> [1dif_proflexdataset]
+
+
+	 WARNING MESSAGES PRESENT:
+
+	 Some [Expected] covalent bonds were too poor
+	    to connect: See poor_bond in *proflexdataset* for details.
+
+Type  "s"  to stop or any other key to continue: c
+
+		H-BOND/SALT BRIDGE BOND LENGTH & ANGLE CRITERIA
+
+Default H-bond & salt bridge list has been compiled and written to
+'_proflexdataset' file. It includes intra- and inter-molecular
+H-bonds meeting the following default stereochemical criteria:
+
+
+	Hydrogen-Acceptor (H-A) distance <= 2.5 Angstroms
+	                with Sulfur atom <= 3.0 Angstroms
+	                for Salt bridge  <= 3.5 Angstroms
+
+	Donor-Acceptor (D-A) distance    <= 3.5 Angstroms
+	             with Sulfur atom    <= 4.0 Angstroms
+	              for Salt bridge    <= 4.5 Angstroms
+
+	Theta (D-H-A angle)              >= 110 Degrees
+	Delta (H-A-Pre-acceptor angle)   >= 90  Degrees
+
+Indices of H-bonds filtered more stringently (see below) are written to
+'_h-bonds_SEfilt' file.
+
+Do you wish to impose more stringent rules? (y/n): n
+
+	Number of H-bonds remaining: 170
+	Number of hydrophobic tethers remaining: 131
+
+
+
+Please enter 'c' and press enter to continue:c
+
+
+			NON-COVALENT BOND SCREENING OPTIONS MENU
+
+	 1 : Keep *ALL* H-bonds involving WATER 
+		(Select this ONLY if you have included only
+		 buried water molecules in the input PDB file)
+	 2 : Remove *ALL* H-bonds involving sidechain atoms
+	 3 : Remove *ALL* H-bonds involving non-water HETATOMs
+	 4 : Remove hydrophobic tethers
+	 5 : Use defaults (keep hydrophobic tethers and H-bonds except those including water)
+
+	 f : Finished selecting options; Continue to next step
+	 s : Stop program
+
+	Enter Option: 5
+
+
+
+		SELECTED SCREENING OPTIONS
+
+	 5 Use defaults (keep hydrophobic tethers and H-bonds except those including water)
+
+	Do you accept these options? (y)es or (no): y
+
+Number of H-bonds remaining: 170
+
+Number of H-phobic tethers remaining: 131
+
+		 Filter on Hydrogen Bond Energy:
+		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	All current hydrogen bonds have energies between:
+	    -9.8806 Kcal/Mol  to  8.2438 Kcal/Mol
+
+	Enter a maximum acceptable hydrogen bond energy (in Kcal/Mol)
+	(-1.0 is a reasonable cutoff in general): -1.0
+
+    ANALYSIS MENU
+
+  What would you like to perform:
+
+    (1) Flexibility and rigidity analysis
+    (2) Hydrogen bond dilution
+1
+
+                         SELECTION CRITERIA
+
+        Hydrogen bond geometric selection criteria:                             
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                             
+        Donor-Acceptor distance <= 3.5 Ang. without sulfur                      
+        Donor-Acceptor distance <= 4 Ang. with sulfur                           
+        Donor-Acceptor distance <= 4.5 Ang. salt bridge                         
+        Hydrogen-Acceptor distance <= 2.5 Ang. without sulfur                   
+        Hydrogen-Acceptor distance <= 3 Ang. with sulfur                        
+        Hydrogen-Acceptor distance <= 3.5 Ang. salt bridge                      
+        Donor-Hydrogen-Acceptor angle >= 110 Deg.                               
+        Hydrogen-Acceptor-Preacceptor angle >= 90 Deg.                          
+                                                                                
+        Hydrogen bond energetic selection criteria:                             
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                             
+        Maximum allowed hydrogen bonding energy = -1 Kcal/Mol                   
+                                                                                
+        Non-covalent bond selection criteria:                                   
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                   
+        Default: Remove *ALL* H-bonds involving waters                          
+---------------------------------------------------------------------
+                    BASIC SUMMARY OF PROFLEX ANALYSIS
+
+      3519 Atoms
+       155 Hydrogen bonds
+       131 Hydrophobic tethers
+       220 Torsional constraints
+       261 Independent degrees of freedom (DOF)
+       666 Rigid clusters
+         0 Isolated atoms
+         0 Isolated Dimers
+         1 Three-dimensional objects
+         6 Network induced stress regions
+       255 Floppy modes (internal independent DOF)
+       747 Hinge joints
+       177 Independent hinge joints
+        19 Collective motions (with two or more hinges)
+---------------------------------------------------------------------
+
+           Archive decomposition?   Enter Y/N  --> Y is default
+y
+     Please wait:  Writing PyMol script files
+
+
+	The number of ATOMS = 3519
+
+[usr@host] >
+
+
+Script done

@@ -1,0 +1,94 @@
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c  MSU ProFlex, formerly called FIRST, is a software developed to predict and  c
+c  analyze protein flexibility.                                                c
+c  This source file is a part of MSU ProFlex.                                  c
+c                                                                              c
+c  Copyright (C) 1997 - 2006, Michigan State University.                       c
+c                                                                              c
+c  This program is free software; you can redistribute to academic users only, c
+c  it and/or modify it under the terms of the GNU General Public License,      c
+c  version 2, as published by the Free Software Foundation.                    c
+c                                                                              c
+c  This program is distributed in the hope that it will be useful,             c
+c  but WITHOUT ANY WARRANTY; without even the implied warranty of              c 
+c  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               c
+c  GNU General Public License for more details.                                c
+c                                                                              c
+c  You should have received a copy of the GNU General Public License           c
+c  along with this program; if not, write to the Free Software                 c
+c  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA,  c
+c  or see http://www.gnu.org/licenses/gpl.txt                                  c
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+c
+c                                                 LAST MODIFIED:    May 17, 2000
+c                                                 PROGRAM WRITTEN:  May 27, 1997
+c                               Variables
+
+c iga = average number of atoms per group (residue) 
+c maxatm = maximum number of atoms allowed in macromolecule.
+c maxgrp = maximum number of distinct groups of atoms allowed.
+c nbmax = the maximum number of central-force bonds in the BB-network.
+c nb2max = twice the maximum number of central-force bonds in the BB-network.
+c zave = average [central-force] coordination number allowed in BB-network.
+c dist2max = maximum squared bond length accepted for a covalent bond.
+c dist2min = minimum squared bond length accepted for a covalent bond.
+c maxcase = maximum # of special covalent bond cases that can be considered.
+c admaxd = maximum distance allowed in H-bond between acceptor-donor pair.
+c dha_ang = minimum allowed donor-hydrogen-acceptor angle not involving sulfur
+c hamaxd = maximum distance allowed in H-bond between H-acceptor pair. 
+c igh = average number of Hydrogen bonds per group (residue)
+c maxh = maximum number of Hydrogen bonds that can be considered. 
+c raddeg = conversion factor from degrees to radians
+c s_admaxd = maximum distance allowed in H-bond between acceptor-donor pair
+c     with at least one of the atoms being Sulfur. 
+c s_dha_ang = minimum allowed donor-hydrogen-acceptor angle involving sulfur
+c s_hamaxd = maximum distance allowed in H-bond between H-acceptor pair with
+c     at least one of the acceptor or donor atoms being Sulfur. 
+c sb_admaxd = max distance allowed in salt bridge between acceptor-donor pair
+c sb_hamaxd = max distance allowed in salt bridge between H-acceptor pair
+c sb_dha_ang = minimum allowed donor-hydrogen-acceptor angle in salt bridge
+c grdlngth = the length of one side of a cube forming a coarse grained cell
+c     This distance must be bigger than the longest Donor-Acceptor distance
+c id = dimension of network. Note that here id=3 and cannot be changed!
+c izcf = maximum CF-bond coordination number. 
+c iskiptag = (2^31 - 1) a special tag that is larger than all other tags used 
+c      for other purposes. This allows quick detection of a free pebble.
+c maxtag = the "maximum" taging label that can be used before re-initializing. 
+c     Actually this label can be exceeded until a check is perform.  
+c nsfail_min = the minimum number of sites within a failed pebble search before
+c     isostatic parts of the same laman subgraph are included.
+c irigid = (2^31 - 2) a special tag used to denote a site is mutually rigid
+c     with respect to a particular rigid cluster.
+c maxr = maximum number of ranges in cluster sizes for seting color preferences.
+c maxcolor = maximum number of distinct colors used in coloring rigid clusters. 
+c maxch =  maximum # of color selection tables to facililate CHoosing colors.
+c ==============================================================================
+c                           DEFINE PARAMETERS
+c     parameter(raddeg = 1.745329e-02)
+c --------------------------------------------------------- network connectivity
+c     parameter(maxgrp=5000,iga=15,igh=5,zave=3.5e0) 
+      parameter(maxgrp=5000,iga=20,igh=5)
+      parameter(maxatm=iga*maxgrp,nsmax=maxatm)
+      parameter(nb2max=1000+262500)
+      parameter(nbmax=nb2max/2,maxh=igh*maxgrp+1000)
+c ------------------------------------------------------------- chemical bonding
+c All chemical bonding is now done in C++ (makechem.cpp)
+c include/class.h has parameters equivalent to following - Sameer 14.Mar.04
+c
+c  >>>>>>>>>>>>>     MODIFIED BY Sandeep in Apr 2006 <<<<<<<
+c
+c     parameter(maxcase=1000,dist2min=0.5e0,dist2max=3.1e0)
+c     parameter(admaxd=3.5e0,s_admaxd=4.0e0,sb_admaxd=4.5e0)
+c     parameter(hamaxd=2.5e0,s_hamaxd=3.0e0,sb_hamaxd=3.5e0)
+c     parameter(   dha_ang= 110.0*raddeg)
+c     parameter( s_dha_ang= 110.0*raddeg)
+c     parameter(sb_dha_ang= 110.0*raddeg)
+c -------------------------------------------------------------- coarse graining
+c     parameter(grdlngth=sb_admaxd+0.1e0)
+c ------------------------------------------------------------------ pebble game
+      parameter(nsfail_min=100,izcf=12,maxtag=1000000000,id=3)
+      parameter(irigid=2147483646,iskiptag=2147483647)
+      parameter(nb1=1,nb2=2,nb3=3,nb4=4,nb5=5,nb6=6)
+c --------------------------------------------------------------------- graphics
+      parameter(maxr=5,maxcolor=12,maxch=7)

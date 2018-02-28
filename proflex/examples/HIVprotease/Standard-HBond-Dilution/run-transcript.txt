@@ -1,0 +1,301 @@
+Script start
+
+[host@msu.edu] > proflex -p 1dif_proflexdataset 
+
+
+
+
+
+	               #    #   ####   #    #
+	               ##  ##  #       #    #
+	               # ## #   ####   #    #
+	               #    #       #  #    #
+	               #    #  #    #  #    #
+	               #    #   ####    ####
+
+	 ######                  #######
+	 #     #  #####    ####  #        #       ######  #    #
+	 #     #  #    #  #    # #        #       #        #  #
+	 ######   #    #  #    # #####    #       #####     ##
+	 #        #####   #    # #        #       #         ##
+	 #        #   #   #    # #        #       #        #  #
+	 #        #    #   ####  #        ######  ######  #    #
+	----------------------------------------------------------
+	 Software for Protein Flexibility Prediction and Analysis
+	                   version 5.0
+	    Copyright (C) 1997 - 2008, Michigan State University
+	                (formerly called FIRST)
+	     Protein Structural Analysis and Design Laboratory
+	                Michigan State University
+	                   East Lansing MI, USA
+
+
+
+	 Working with previous file: 1dif_proflexdataset
+
+	WARNING MESSAGES SUPPRESSED with -p option.
+
+
+Type  "s"  to stop or any other key to continue: 
+		H-BOND/SALT BRIDGE BOND LENGTH & ANGLE CRITERIA
+
+Default H-bond & salt bridge list has been compiled and written to
+'_proflexdataset' file. It includes intra- and inter-molecular
+H-bonds meeting the following default stereochemical criteria:
+
+
+	Hydrogen-Acceptor (H-A) distance <= 2.5 Angstrom
+	                with Sulfur atom <= 3.0 Angstrom
+	                for Salt bridge  <= 3.5 Angstrom
+
+	Donor-Acceptor (D-A) distance    <= 3.5 Angstrom
+	             with Sulfur atom    <= 4.0 Angstrom
+	              for Salt bridge    <= 4.5 Angstrom
+
+	Theta (D-H-A angle)              >= 110 Degree
+	Delta (H-A-Pre-acceptor angle)   >= 90  Degree
+
+Indices of H-bonds filtered more stringently (see below) are written to
+'_h-bonds_SEfilt' file.
+
+Do you wish to impose more stringent rules? (y/n): n
+
+	Number of H-bonds remaining: 170
+	Number of hydrophobic tethers remaining: 131
+
+
+
+Please enter 'c' and press enter to continue:c
+
+			NON-COVALENT BOND SCREENING OPTIONS MENU
+
+	 1 : Keep *ALL* H-bonds involving WATER 
+		(Select this ONLY if you have included only
+		 buried water molecules in the input PDB file)
+	 2 : Remove *ALL* H-bonds involving sidechain atoms
+	 3 : Remove *ALL* H-bonds involving non-water HETATOMs
+	 4 : Remove hydrophobic tethers
+	 5 : Use defaults (keep hydrophobic tethers and H-bonds except those including water)
+
+	 f : Finished selecting options; Continue to next step
+	 s : Stop program
+
+	Enter Option: 5
+
+
+
+		SELECTED SCREENING OPTIONS
+
+	 5 Use defaults (keep hydrophobic tethers and H-bonds except those including water)
+
+	Do you accept these options? (y)es or (no): y
+
+Number of H-bonds remaining: 170
+
+Number of H-phobic tethers remaining: 131
+
+		 Filter on Hydrogen Bond Energy:
+		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	All current hydrogen bonds have energies between:
+	    -9.8806 Kcal/Mol  to  8.2438 Kcal/Mol
+
+	Enter a maximum acceptable hydrogen bond energy (in Kcal/Mol): -1.0
+
+    ANALYSIS MENU
+
+  What would you like to perform:
+
+    (1) Flexibility and rigidity analysis
+    (2) Hydrogen bond dilution
+2
+
+  Which hydrogen bond dilution analysis would you like?
+
+   (1) Standard hydrogen bond dilution, removing weakestH-bonds, one at a time
+
+   (2) Random dilution over all H-bonds.
+       NOTE: This option is *not* recommended;
+             It may be used to probe the influence of H-bond
+             density, as opposed to strength, on rigidity
+
+1
+  Would you like the output on a single page <y>or<n>?
+y
+ # hbonds present:  154
+ # hbonds present:  153
+ # hbonds present:  152
+ # hbonds present:  151
+ # hbonds present:  150
+ # hbonds present:  149
+ # hbonds present:  148
+ # hbonds present:  147
+ # hbonds present:  146
+ # hbonds present:  145
+ # hbonds present:  144
+ # hbonds present:  143
+ # hbonds present:  142
+ # hbonds present:  141
+ # hbonds present:  140
+ # hbonds present:  139
+ # hbonds present:  138
+ # hbonds present:  137
+ # hbonds present:  136
+ # hbonds present:  135
+ # hbonds present:  134
+ # hbonds present:  133
+ # hbonds present:  132
+ # hbonds present:  131
+ # hbonds present:  130
+ # hbonds present:  129
+ # hbonds present:  128
+ # hbonds present:  127
+ # hbonds present:  126
+ # hbonds present:  125
+ # hbonds present:  124
+ # hbonds present:  123
+ # hbonds present:  122
+ # hbonds present:  121
+ # hbonds present:  120
+ # hbonds present:  119
+ # hbonds present:  118
+ # hbonds present:  117
+ # hbonds present:  116
+ # hbonds present:  115
+ # hbonds present:  114
+ # hbonds present:  113
+ # hbonds present:  112
+ # hbonds present:  111
+ # hbonds present:  110
+ # hbonds present:  109
+ # hbonds present:  108
+ # hbonds present:  107
+ # hbonds present:  106
+ # hbonds present:  105
+ # hbonds present:  104
+ # hbonds present:  103
+ # hbonds present:  102
+ # hbonds present:  101
+ # hbonds present:  100
+ # hbonds present:  99
+ # hbonds present:  98
+ # hbonds present:  97
+ # hbonds present:  96
+ # hbonds present:  95
+ # hbonds present:  94
+ # hbonds present:  93
+ # hbonds present:  92
+ # hbonds present:  91
+ # hbonds present:  90
+ # hbonds present:  89
+ # hbonds present:  88
+ # hbonds present:  87
+ # hbonds present:  86
+ # hbonds present:  85
+ # hbonds present:  84
+ # hbonds present:  83
+ # hbonds present:  82
+ # hbonds present:  81
+ # hbonds present:  80
+ # hbonds present:  79
+ # hbonds present:  78
+ # hbonds present:  77
+ # hbonds present:  76
+ # hbonds present:  75
+ # hbonds present:  74
+ # hbonds present:  73
+ # hbonds present:  72
+ # hbonds present:  71
+ # hbonds present:  70
+ # hbonds present:  69
+ # hbonds present:  68
+ # hbonds present:  67
+ # hbonds present:  66
+ # hbonds present:  65
+ # hbonds present:  64
+ # hbonds present:  63
+ # hbonds present:  62
+ # hbonds present:  61
+ # hbonds present:  60
+ # hbonds present:  59
+ # hbonds present:  58
+ # hbonds present:  57
+ # hbonds present:  56
+ # hbonds present:  55
+ # hbonds present:  54
+ # hbonds present:  53
+ # hbonds present:  52
+ # hbonds present:  51
+ # hbonds present:  50
+ # hbonds present:  49
+ # hbonds present:  48
+ # hbonds present:  47
+ # hbonds present:  46
+ # hbonds present:  45
+ # hbonds present:  44
+ # hbonds present:  43
+ # hbonds present:  42
+ # hbonds present:  41
+ # hbonds present:  40
+ # hbonds present:  39
+ # hbonds present:  38
+ # hbonds present:  37
+ # hbonds present:  36
+ # hbonds present:  35
+ # hbonds present:  34
+ # hbonds present:  33
+ # hbonds present:  32
+ # hbonds present:  31
+ # hbonds present:  30
+ # hbonds present:  29
+ # hbonds present:  28
+ # hbonds present:  27
+ # hbonds present:  26
+ # hbonds present:  25
+ # hbonds present:  24
+ # hbonds present:  23
+ # hbonds present:  22
+ # hbonds present:  21
+ # hbonds present:  20
+ # hbonds present:  19
+ # hbonds present:  18
+ # hbonds present:  17
+ # hbonds present:  16
+ # hbonds present:  15
+ # hbonds present:  14
+ # hbonds present:  13
+ # hbonds present:  12
+ # hbonds present:  11
+ # hbonds present:  10
+ # hbonds present:  9
+ # hbonds present:  8
+ # hbonds present:  7
+ # hbonds present:  6
+ # hbonds present:  5
+ # hbonds present:  4
+ # hbonds present:  3
+ # hbonds present:  2
+ # hbonds present:  1
+ $PROFLEX_HOME/hbdilute/bin/hbdilute decomp_list b 1dif_proflexdataset                               
+
+------- Inserted and Missing Residue Information ----------
+
+Residue #:	Chain-ID:	# of insertions:
+
+                         Curr.                   Actual Missing
+Chain #: ID: Insertions: Size: Min_rsd: Max_rsd: Size:  Rsd:
+  0	 A	0	  99	 1	 99	 99	0
+Missing residue list:
+
+
+  1	 B	0	  99	 1	 99	 99	0
+Missing residue list:
+
+
+------------- END OF INFORMATION ----------
+
+DEBUG (hbdilute.c):  number of residues: 198 and chains: 1
+
+[host@msu.edu] >
+
+Script done 

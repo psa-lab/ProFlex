@@ -1,0 +1,218 @@
+Script started
+
+[usr@host]> $PROFLEX_HOME/../bin/proflex
+
+    Usage : /home/namiliko/proflex/V5.0_files/2008/testversion/proflexv5.0/prog/../bin/proflex [-r] [-e] [-nonh|nonf] <-h|{-p|-pw}> <filename>
+
+    <filename> Expected to have a .pdb or .PDB file extension.
+	       With the -p or -pw option the extension may be _proflexdataset.
+
+
+	Option definitions:
+
+	-nonh  Use for non-interactive hydrogen bond dilution.
+
+	-nonf  Use for non-interactive flexibility analysis.
+
+	       **NOTE: Any filtering using stereochemical, energy,
+			hydrophobic, side chain, and water criteria from the
+			previous ProFlex run generating the proflex_dataset file
+			are not applied in -non mode.  Only the default stereochemical
+			criteria are applied. Be sure to only include buried
+			water molecules in the input PDB file.**
+
+	-h     Use with a PDB file having hydrogens.
+	       Hydrogens can be added explicitly by programs like WhatIf.
+
+	-r     Distance between van der Wal's surfaces of atoms participating
+	       in a hydrophobic interaction. 0.5 is default.
+
+	-e     Max energy a hydrogen bond can have to be included in the analysis.
+
+	-p     Use when the original PDB file has been previously processed.
+	       *proflexdataset* file from previous run must exist in the same directory.
+
+	-pw    Same as [-p] except previous warning messages are re-displayed.
+
+
+
+[usr@host]> $PROFLEX_HOME/../bin/proflex  -h  1bck_withH.pdb 
+
+
+
+
+
+
+	               #    #   ####   #    #
+	               ##  ##  #       #    #
+	               # ## #   ####   #    #
+	               #    #       #  #    #
+	               #    #  #    #  #    #
+	               #    #   ####    ####
+
+	 ######                  #######
+	 #     #  #####    ####  #        #       ######  #    #
+	 #     #  #    #  #    # #        #       #        #  #
+	 ######   #    #  #    # #####    #       #####     ##
+	 #        #####   #    # #        #       #         ##
+	 #        #   #   #    # #        #       #        #  #
+	 #        #    #   ####  #        ######  ######  #    #
+	----------------------------------------------------------
+	 Software for Protein Flexibility Prediction and Analysis
+	                   version 5.0
+	    Copyright (C) 1997 - 2008, Michigan State University
+	                (formerly called FIRST)
+	     Protein Structural Analysis and Design Laboratory
+	                Michigan State University
+	                   East Lansing MI, USA
+
+
+
+Processing the new data set [1bck_withH.pdb] --> [1bck_withH_proflexdataset]
+
+
+
+	 NO WARNING MESSAGES PRESENT.
+
+
+Type  "s"  to stop or any other key to continue: c
+
+		H-BOND/SALT BRIDGE BOND LENGTH & ANGLE CRITERIA
+
+Default H-bond & salt bridge list has been compiled and written to
+'_proflexdataset' file. It includes intra- and inter-molecular
+H-bonds meeting the following default stereochemical criteria:
+
+
+	Hydrogen-Acceptor (H-A) distance <= 2.5 Angstroms
+	                with Sulfur atom <= 3.0 Angstroms
+	                for Salt bridge  <= 3.5 Angstroms
+
+	Donor-Acceptor (D-A) distance    <= 3.5 Angstroms
+	             with Sulfur atom    <= 4.0 Angstroms
+	              for Salt bridge    <= 4.5 Angstroms
+
+	Theta (D-H-A angle)              >= 110 Degrees
+	Delta (H-A-Pre-acceptor angle)   >= 90  Degrees
+
+Indices of H-bonds filtered more stringently (see below) are written to
+'_h-bonds_SEfilt' file.
+
+Do you wish to impose more stringent rules? (y/n): y
+
+	Enter H-A Distance (<= 2.5 A): 2.5
+
+	Enter H-A Distance for H-bonds with Sulfur (<= 3.0 A): 3.0
+
+	Enter H-A Distance for salt bridges (<= 3.5 A): 3.5
+
+	Enter D-A Distance (<= 3.5): 3.5
+
+	Enter D-A Distance for H-bonds with Sulfur (<= 4.0): 4.0
+
+	Enter D-A Distance for salt bridges (<= 4.5): 4.5
+
+	Enter Theta Angle (>= 110): 111
+
+	Enter Delta Angle (>= 90): 91
+
+	Number of H-bonds remaining: 193
+	Number of hydrophobic tethers remaining: 121
+
+
+
+Please enter 'c' and press enter to continue:c
+
+			NON-COVALENT BOND SCREENING OPTIONS MENU
+
+	 1 : Keep *ALL* H-bonds involving WATER 
+		(Select this ONLY if you have included only
+		 buried water molecules in the input PDB file)
+	 2 : Remove *ALL* H-bonds involving sidechain atoms
+	 3 : Remove *ALL* H-bonds involving non-water HETATOMs
+	 4 : Remove hydrophobic tethers
+	 5 : Use defaults (keep hydrophobic tethers and H-bonds except those including water)
+
+	 f : Finished selecting options; Continue to next step
+	 s : Stop program
+
+	Enter Option: 5
+
+
+
+		SELECTED SCREENING OPTIONS
+
+	 5 Use defaults (keep hydrophobic tethers and H-bonds except those including water)
+
+	Do you accept these options? (y)es or (no): y
+
+Number of H-bonds remaining: 161
+
+Number of H-phobic tethers remaining: 121
+
+		 Filter on Hydrogen Bond Energy:
+		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+	All current hydrogen bonds have energies between:
+	    -9.9539 Kcal/Mol  to  2.5075 Kcal/Mol
+
+	Enter a maximum acceptable hydrogen bond energy (in Kcal/Mol)
+	(-1.0 is a reasonable cutoff in general): -2.3
+
+    ANALYSIS MENU
+
+  What would you like to perform:
+
+    (1) Flexibility and rigidity analysis
+    (2) Hydrogen bond dilution
+1
+
+                          SELECTION CRITERIA
+
+        Hydrogen bond geometric selection criteria:                             
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                             
+        Donor-Acceptor distance <= 3.5 Ang. without sulfur                      
+        Donor-Acceptor distance <= 4 Ang. with sulfur                           
+        Donor-Acceptor distance <= 4.5 Ang. salt bridge                         
+        Hydrogen-Acceptor distance <= 2.5 Ang. without sulfur                   
+        Hydrogen-Acceptor distance <= 3 Ang. with sulfur                        
+        Hydrogen-Acceptor distance <= 3.5 Ang. salt bridge                      
+        Donor-Hydrogen-Acceptor angle >= 111 Deg.                               
+        Hydrogen-Acceptor-Preacceptor angle >= 91 Deg.                          
+                                                                                
+        Hydrogen bond energetic selection criteria:                             
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                             
+        Maximum allowed hydrogen bonding energy = -2.3 Kcal/Mol                 
+                                                                                
+        Non-covalent bond selection criteria:                                   
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                                   
+        Default: Remove *ALL* H-bonds involving waters                          
+---------------------------------------------------------------------
+                    BASIC SUMMARY OF PROFLEX ANALYSIS
+
+      1948 Atoms
+        99 Hydrogen bonds
+       121 Hydrophobic tethers
+       182 Torsional constraints
+       286 Independent degrees of freedom (DOF)
+       696 Rigid clusters
+         0 Isolated atoms
+         0 Isolated Dimers
+        13 Three-dimensional objects
+         9 Network induced stress regions
+       208 Floppy modes (internal independent DOF)
+       778 Hinge joints
+       133 Independent hinge joints
+         3 Collective motions (with two or more hinges)
+---------------------------------------------------------------------
+
+           Archive decomposition?   Enter Y/N  --> Y is default
+y
+     Please wait:  Writing PyMol script files
+
+
+	The number of ATOMS = 1948
+
+[host@] >
+
+Script done

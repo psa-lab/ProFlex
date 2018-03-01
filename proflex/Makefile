@@ -38,8 +38,9 @@ clean:
 bindir:
 	#creates a bin folder in the proflex directory that contains links to all executables
 	mkdir -p bin
-	ln -s ${PROFLEX_HOME}/first/bin/proflex bin/proflex
-	ln -s ${PROFLEX_HOME}/hbdilute/bin/hbdilute bin/hbdilute
-	ln -s ${PROFLEX_HOME}/../util/flex_index bin/flex_index
+	ln -sf ${PROFLEX_HOME}/first/bin/proflex bin/proflex
+	ln -sf ${PROFLEX_HOME}/hbdilute/bin/hbdilute bin/hbdilute
+	ln -sf ${PROFLEX_HOME}/../util/flex_index bin/flex_index
+
 
  

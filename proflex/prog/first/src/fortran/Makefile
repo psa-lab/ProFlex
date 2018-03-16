@@ -49,7 +49,7 @@ clstrlabels.o: clstrlabels.f set_parameter
 	${F77} -O3 -c clstrlabels.f ${FFLAGS}
 
 colorclustr.o: colorclustr.f set_parameter
-	${F77} -O3 -c -I set_parameter colorclustr.f ${FFLAGS}
+	${F77} -O3 -c -i set_parameter colorclustr.f ${FFLAGS}
 
 decomp_R3dbb.o: decomp_R3dbb.f  set_parameter
 	${F77} -O3 -c decomp_R3dbb.f ${FFLAGS}

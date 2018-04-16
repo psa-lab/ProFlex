@@ -19,6 +19,28 @@ This software is available as source code and has been applied to many proteins 
 
 - D. J. Jacobs, A. J. Rader, L. A. Kuhn, and M. F. Thorpe (2001) Protein Flexibility Predictions Using Graph Theory ([pdf](http://www.kuhnlab.bmb.msu.edu/publication_papers/pdf/jacobsproteins2001.pdf)) Proteins: Structure, Function, and Genetics 44, 150-165.
 
+## Supported Platforms
+
+ProFlex is very resource-efficient and can analyze a protein complex within approximately a second. While other operating systems might be compatible, we recommened installing and running ProFlex on macOS or CentOS Linux. 
+
+
+## Quick Installation Guide
+
+This quick installation guide walks you through an example for how to install ProFlex on macOS 10.13 (High Sierra). Similar steps should apply to various Linux distributions like RedHat or CentOS but might be less straightforward. For general installation information, please refer to the documents linked in the **User Manual** section further below.
+
+1. Download ProFlex from GitHub by clicking the "Clone or Download" and then "Download ZIP" button in the upper right corner of this repository.
+2. Unzip the downloaded `ProFlex-master.zip` file, open a new Terminal window, and navigate (`cd`) into the unzipped `ProFlex-master` directory and then `cd` into the `proflex/prog` subdirectory.
+3. Execute `pwd` in the Terminal window and note the exact path of the `proflex/prog` subdirectory, e.g., `/Users/sebastian/Desktop/ProFlex-Master/proflex/prog`. This path is required for setting the `PROFLEX_HOME` environment variable of your Terminal's bash shell. You can do this by executing e.g., `export PROFLEX_HOME=/Users/sebastian/Desktop/ProFlex-Master/proflex/prog`.
+4. In addition to setting the `PROFLEX_HOME` environment variable, it is recommended to also add the line (`export PROFLEX_HOME=/Users/sebastian/Desktop/ProFlex-Master/proflex/prog`) to your `~/.bash_profile` file so that you don't need to execute it each time you open a new Terminal window and want to run ProFlex.
+5. Now, navigate from the `ProFlex-Master/proflex/prog` subdirectory back into the `ProFlex-Master/proflex` subdirectory and execute the command `make`. You might be prompted to install Apple's Developer Tools in case you haven't compiled code before. If you are prompted to do so, please go ahead and install these developer tools.
+6. If you had to install the developer tools in step 5, attempt the compilation again by running `make`. In case you see an error regarding missing F77 compiler. If you don't have a Fortran compiler like `gfortran` installed, it's now time to do so (you can check if `gfortran` installed by running `which gfortran` in the Terminal). Binary installers for different versions of macOS are available form this website: https://gcc.gnu.org/wiki/GFortranBinaries.
+7. If you execute `which gfortran` and see that a valid path is returned, this indicates that you have a version of GFortran installed. What you need to do next is to execute `export F77=gfortran` in the Terminal and execute the `make` command from the `ProFlex-Master/proflex` directory command one more time.
+8. After the compilation succcessfully completed, the ProFlex executable will be available as `ProFlex-Master/proflex/bin/proflex`.
+
+**Debugging Notes**
+
+- If you successfully installed ProFlex but later get an `Segmentation Fault: 11` error when you try to execute it in a new Terminal window, this typically means that the `PROFLEX_HOME` isn't set in the current bash session. See steps 3 & 4 above to fix this issue.
+
 ## User Manual
 
 An updated version (v5.0) of the manual will be available shortly. Meanwhile, version 4.0 of the manual can be downloaded by clicking the link below. Note that the background on ProFlex in this manual will be useful, but many of the aspects of running the software, including output file formats and visualization, have changed. For details of running the code, please refer to the Quick Guide (for v. 5.1) distributed with the software (and also made available for download below).

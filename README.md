@@ -43,7 +43,7 @@ This quick installation guide walks you through an example for how to install Pr
 
 ## User Manual
 
-- [A Quick Guide to ProFlex 5.1](docs/QuickGuideToProFlex.txt) ([pdf format](docs/QuickGuideToProFlex.pdf))
+- [A Quick Guide to ProFlex 5.1](proflex/docs/QuickGuideToProFlex.txt) ([pdf format](proflex/docs/QuickGuideToProFlex.pdf))
 
 ## License Agreements
 

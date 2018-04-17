@@ -3,7 +3,7 @@
 
 MSU ProFlex (formerly called FIRST) is a computational tool for identifying rigid and flexible regions in protein structures and protein-ligand complexes. Analysis of a single, static three-dimensional protein structure can capture the essential conformational flexibility of the protein.
 
-Hydrogen bonds, salt bridges and hydrophobic contacts are identified by geometric and energetic criteria once polar hydrogens have been placed using an external program (such as What If). Using a constraint counting algorithm, all-atom calculations on proteins of over 1000 residues can be completed within seconds.
+Hydrogen bonds, salt bridges and hydrophobic contacts are identified by geometric and energetic criteria once hydrogens have been placed using an external program (e.g., WHAT IF (using the HB2NET command), AMBER, YASARA, or GROMACS). Using a constraint counting algorithm, all-atom calculations on proteins of over 1000 residues can be completed within seconds.
 
 This software is available as source code and has been applied to many proteins and their complexes (see publications below).
 
@@ -26,7 +26,7 @@ ProFlex is very resource-efficient and can analyze a protein complex within appr
 
 ## Quick Installation Guide
 
-This quick installation guide walks you through an example for how to install ProFlex on macOS 10.13 (High Sierra). Similar steps should apply to various Linux distributions like RedHat or CentOS but might be less straightforward. For general installation information, please refer to the documents linked in the **User Manual** section further below.
+This quick installation guide walks you through an example for how to install ProFlex on macOS 10.13 (High Sierra). Similar steps should apply to various Linux distributions like RedHat or CentOS but might be less straightforward. For general installation information, please refer to the documents linked in the **User Manual** section below.
 
 1. Download ProFlex from GitHub by clicking the "Clone or Download" and then "Download ZIP" button in the upper right corner of this repository.
 2. Unzip the downloaded `ProFlex-master.zip` file, open a new Terminal window, and navigate (`cd`) into the unzipped `ProFlex-master` directory and then `cd` into the `proflex/prog` subdirectory.
@@ -43,10 +43,7 @@ This quick installation guide walks you through an example for how to install Pr
 
 ## User Manual
 
-An updated version (v5.0) of the manual will be available shortly. Meanwhile, version 4.0 of the manual can be downloaded by clicking the link below. Note that the background on ProFlex in this manual will be useful, but many of the aspects of running the software, including output file formats and visualization, have changed. For details of running the code, please refer to the Quick Guide (for v. 5.1) distributed with the software (and also made available for download below).
-
-- [ProFlex / FIRST Manual 4.0](http://www.kuhnlab.bmb.msu.edu/projects/first/docs/FIRST_Manual.pdf) (pdf format)
-- [A Quick Guide to ProFlex 5.1](http://www.kuhnlab.bmb.msu.edu/projects/first/docs/A_Quick_Guide_to_ProFlex.pdf) (pdf format)
+- [A Quick Guide to ProFlex 5.1](docs/QuickGuideToProFlex.txt) ([pdf format](docs/QuickGuideToProFlex.pdf))
 
 ## License Agreements
 

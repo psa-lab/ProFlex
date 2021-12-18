@@ -33,13 +33,6 @@ void print_current_Hbond_info_portrait( FILE *, int, int, int, int *, int, float
 					int, int, int, int[], char [], char [], int,
 					char, char, char[], char[], int, float, int );
 
-void print_current_Hbond_info_landscape(FILE *, int, int, int, int *, int,
-                                        float, int, int[], int, int, int, float,
-                                        int *, int, int, int, int[], char[],
-                                        char[], int, char, char, char[], int[],
-                                        char[], int, float, int,
-                                        /* SN 2008:01 */ int, int, char, char,
-                                        int);
 void print_current_Hbond_info_landscape( FILE *, int, int, int, int *, int, float, 
 					 int, int [], int, int, int, float, int *, 
 					 int, int, int, int[], char [], char [], int,

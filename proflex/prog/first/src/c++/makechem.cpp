@@ -1280,7 +1280,7 @@ void conect_list::add_conect(void) {
   ifil.open(inputfile, ios::in);
   ofil.open(outputfile, ios::app);
 
-  while (ifil != NULL) {
+  while (ifil) {
 
     fresh = new conect_node;
 

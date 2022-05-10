@@ -44,6 +44,29 @@
 /* Outout is written to a text file instead of generating a postscript*/                
 /**********************************************************************/
 
+static void swap_colors(int array[MAX_CLUSTER_COUNT], int A, int B) {
+  int temp;
+  temp = array[A];
+  array[A] = array[B];
+  array[B] = temp;
+}
+
+static void quick_sort(int *array, int start, int end) {
+
+  int a = 0, last = 0;
+
+  if (start >= end)
+    return;
+  swap_colors(array, start, (start + end) / 2);
+  last = start;
+  for (a = start + 1; a <= end; a++) {
+    if (array[a] < array[start])
+      swap_colors(array, ++start, a);
+  }
+  swap_colors(array, start, last);
+  quick_sort(array, start, last - 1);
+  quick_sort(array, last + 1, end);
+}
 
 void print_text_decomp( 
                     clusters *nc_count[120], int cluster_counter, int line_number, 
@@ -129,4 +152,3 @@ static int
 }
                        
                        
-

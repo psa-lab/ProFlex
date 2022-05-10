@@ -24,7 +24,7 @@
 #define _GRAPHS_
 
 #include "types.h"
-
-void plot_data( FILE *, float[], float[], float[], float[], int );
+#include <stdio.h>
+void plot_data(FILE *, float[], float[], float[], float[], int);
 
 #endif

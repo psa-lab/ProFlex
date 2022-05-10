@@ -1,3 +1,4 @@
+
 /*******************************************************************************
 *  MSU ProFlex, formerly called FIRST, is a software developed to predict and  *
 *  analyze protein flexibility.                                                *
@@ -22,9 +23,9 @@
 
 #ifndef _CONNECT_
 #define _CONNECT_
-
 #include "types.h"
+#include <stdio.h>
 
-void print_connections( FILE *, FILE *, int[] );
+void print_connections(FILE *, FILE *, int[]);
 
 #endif

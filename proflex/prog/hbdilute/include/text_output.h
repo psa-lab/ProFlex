@@ -20,7 +20,7 @@
 *  or see http://www.gnu.org/licenses/gpl.txt                                  *
 *******************************************************************************/
 
-/* 
+/*
  * File:   text_output.h
  * Author: Sameer Arora
  *
@@ -28,11 +28,11 @@
  */
 
 #ifndef _text_output_H
-#define	_text_output_H
+#define _text_output_H
 
 #include "types.h"
+#include <stdio.h>
 
 void print_text_decomp( clusters *[], int, int, FILE *, int [], int, int,float,float); 
 
 #endif	/* _text_output_H */
-

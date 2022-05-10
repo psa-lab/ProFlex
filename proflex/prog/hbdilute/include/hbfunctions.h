@@ -24,6 +24,7 @@
 #define _HDFUNCTIONS_
 
 #include "types.h"
+#include <stdio.h>
 
 void read_chem_file( atom_list **, FILE *, int[], int[], char[], int *, 
 		     int *, int[], int[], char[],
@@ -38,5 +39,3 @@ void clean_up( FILE *, int);
 int open_output_file( char [], FILE**  );
 
 #endif
-
-

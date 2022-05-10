@@ -24,6 +24,7 @@
 #define _POSTSCRIPT_
 
 #include "types.h"
+#include <stdio.h>
 
 void print_header( FILE *, float );
 void print_data_headings( FILE *, int, int, int, int[]  );

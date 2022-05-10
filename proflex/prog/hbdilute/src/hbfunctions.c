@@ -920,4 +920,3 @@ void clean_up( FILE *ps_file, int number_of_pages ){
       return(1); 
       
   }
-
